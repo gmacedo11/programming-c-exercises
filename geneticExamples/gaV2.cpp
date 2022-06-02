@@ -15,6 +15,7 @@
 float x1, x2;
 
 float x1decVal, x2decVal;
+float eval;
 
 
 struct individual{
@@ -69,10 +70,10 @@ float calcDecX2(int numfather){
 
 void calc_aptitude(void) {
     int numfather;
-    float x1aj = -100, x2aj = -100;
-    float x1bj = 100, x2bj = 100;
+    float x1aj = -3.0, x2aj = -4.1;
+    float x1bj = 12.1, x2bj = 5.8;
     float x1mj = 25, x2mj = 25;
-
+    float eval = 0, seno = 0, CuadX = 0;
 
     for (numfather=0;numfather<INDIVIDUALS_SIZE;numfather++) {
         x1decVal = calcDecX1(numfather);
@@ -80,6 +81,8 @@ void calc_aptitude(void) {
         x1 = x1aj + x1decVal * ((x1bj - x1aj)/(pow(2,x1mj)-1));
         x2 = x2aj + x2decVal * ((x2bj - x2aj)/(pow(2,x1mj)-1));
 
+        eval = 21.5 + (x1*(sin(3.1416*4*x1))) + (sin(3.1416*20*x2));
+        father[numfather].aptitude = eval;
 
     }
 }
