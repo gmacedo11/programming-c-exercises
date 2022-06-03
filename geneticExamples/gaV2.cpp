@@ -9,8 +9,8 @@
 #define Chromosomes 39
 #define NO 0
 #define YES 1
-#define POPULATION_SIZE 100
-#define INDIVIDUALS_SIZE 20
+#define POPULATION_SIZE 25
+#define INDIVIDUALS_SIZE 39
 
 float x1, x2;
 
@@ -29,16 +29,16 @@ void gen_Pop(void){
     move(3,10);
     printw("\n Generando poblacion inicial\n");
         srand(time(NULL));
-    for(i=0; i<INDIVIDUALS_SIZE ;i++){
-        if (i<20) printw("\t Padre(%d) = [",i);
+    for(i=0; i<POPULATION_SIZE; i++){
+        printw("\t Padre(%d) = [",i);
         jump = 0;
-        for(j=20;j>=0;j--) {
-            if(jump == 20) printw(" ");
+        for(j=Chromosomes-1;j>=0;j--) {
+            if(jump == 21) printw(" ");
             father[i].chromo[j] = rand()%2;
-            if(i<39) printw("%d", father[i].chromo[j]);
-            if(i<39) jump++;
+            printw("%d", father[i].chromo[j]);
+            jump++;
         }
-        if (i<39) printw("] \n");
+        printw("] \n");
     }
 }
 
@@ -75,17 +75,19 @@ void calc_aptitude(void) {
     float x1mj = 21, x2mj = 18;
     float eval = 0, seno = 0, CuadX = 0;
 
-    for (numfather=0;numfather<INDIVIDUALS_SIZE;numfather++) {
+    clear();
+    printw("\n Evaluación de la función de aptitud: \n");
+    for (numfather=0;numfather<POPULATION_SIZE;numfather++) {
         x1decVal = calcDecX1(numfather);
         x2decVal = calcDecX2(numfather);
         x1 = x1aj + x1decVal * ((x1bj - x1aj)/(pow(2,x1mj)-1));
         x2 = x2aj + x2decVal * ((x2bj - x2aj)/(pow(2,x1mj)-1));
 
-        printw("\n Bin a Dec --> x1d= %f, x2d = %f, x1=%f, x2=%f", x1decVal, x2decVal, x1, x2);
+        printw("\n [ %d ] Bin a Dec --> x1d= %f, x2d = %f, x1=%f, x2=%f", numfather, x1decVal, x2decVal, x1, x2);
 
         eval = 21.5 + (x1*(sin(3.1416*4*x1))) + (sin(3.1416*20*x2));
         father[numfather].aptitude = eval;
-        printw("\n Prueba imprime valor eval %f", eval);
+        printw(" Eval = %f", eval);
 
     }
 }
@@ -109,7 +111,6 @@ int main () {
     /* Conversión binario a decimal */
 
     calc_aptitude();
-
     getch ();
     endwin();
 }
