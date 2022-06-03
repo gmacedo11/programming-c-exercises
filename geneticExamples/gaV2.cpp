@@ -4,9 +4,9 @@
 #include<math.h>
 #include<stdlib.h>
 
-#define BitsVar1 25
-#define BitsVar2 25
-#define Chromosomes 50
+#define BitsVar1 21
+#define BitsVar2 18
+#define Chromosomes 39
 #define NO 0
 #define YES 1
 #define POPULATION_SIZE 100
@@ -30,15 +30,15 @@ void gen_Pop(void){
     printw("\n Generando poblacion inicial\n");
         srand(time(NULL));
     for(i=0; i<INDIVIDUALS_SIZE ;i++){
-        if (i<51) printw("\t Padre(%d) = [",i);
+        if (i<20) printw("\t Padre(%d) = [",i);
         jump = 0;
-        for(j=50;j>=0;j--) {
-            if(jump == 25) printw(" ");
+        for(j=20;j>=0;j--) {
+            if(jump == 20) printw(" ");
             father[i].chromo[j] = rand()%2;
-            if(i<51) printw("%d", father[i].chromo[j]);
-            if(i<51) jump++;
+            if(i<39) printw("%d", father[i].chromo[j]);
+            if(i<39) jump++;
         }
-        if (i<51) printw("] \n");
+        if (i<39) printw("] \n");
     }
 }
 
@@ -59,9 +59,9 @@ float calcDecX2(int numfather){
     int i, j;
     float v_Dec = 0.0;
     for(i=0;i<BitsVar2;i++) {
-        if (father[numfather].chromo[i+25] == 0)
+        if (father[numfather].chromo[i+21] == 0)
         v_Dec = v_Dec+0;
-        else if (father[numfather].chromo[i+25] == 1) {
+        else if (father[numfather].chromo[i+21] == 1) {
             v_Dec = v_Dec + pow(2,i);
         }
     }
@@ -72,7 +72,7 @@ void calc_aptitude(void) {
     int numfather;
     float x1aj = -3.0, x2aj = -4.1;
     float x1bj = 12.1, x2bj = 5.8;
-    float x1mj = 25, x2mj = 25;
+    float x1mj = 21, x2mj = 18;
     float eval = 0, seno = 0, CuadX = 0;
 
     for (numfather=0;numfather<INDIVIDUALS_SIZE;numfather++) {
@@ -81,8 +81,11 @@ void calc_aptitude(void) {
         x1 = x1aj + x1decVal * ((x1bj - x1aj)/(pow(2,x1mj)-1));
         x2 = x2aj + x2decVal * ((x2bj - x2aj)/(pow(2,x1mj)-1));
 
+        printw("\n Bin a Dec --> x1d= %f, x2d = %f, x1=%f, x2=%f", x1decVal, x2decVal, x1, x2);
+
         eval = 21.5 + (x1*(sin(3.1416*4*x1))) + (sin(3.1416*20*x2));
         father[numfather].aptitude = eval;
+        printw("\n Prueba imprime valor eval %f", eval);
 
     }
 }
@@ -104,8 +107,9 @@ int main () {
     getch ();
 
     /* Conversión binario a decimal */
+
     calc_aptitude();
-    printw("\n Bin a Dec --> x1d= %f, x2d = %f, x1=%f, x2=%f", x1decVal, x2decVal, x1, x2);
+
     getch ();
     endwin();
 }
